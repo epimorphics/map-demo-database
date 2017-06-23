@@ -4,32 +4,33 @@ Clone the repository, run npm install
 
 With Postgres setup;
 
+Run npm run-script setup
 
-DOWNLOADING DATA,
+  This will:
+    Download all rainfall and station data from the environments agency
+    Format it all into csv
+    create the 3 tables required
+    load data into database
 
-Supplied are some scripts to help you download data,
+UPDATE
 
-Run download.sh to download data, these will be saved to two files
-  readings.csv, stations.csv
+If the data needs updating
 
-INSERT INTO DB,
+Run npm run-script update
 
-  Now run
-    psql -a -f newsetup.sql
+  This will:
+    Download all missing rainfall data
+    format it to a csv
+    add it to the table
 
-  This will setup five tables
-    station_values
-    stations
-    time_values
-    tempstationscsv
-    tempvaluescsv
+TEARDOWN
 
-  Now run ./insert.sh
+If you wish to remove all data
 
-  This inserts the data from the csvs into the temporary tables
+Run npm run-script teardown
 
-  And finally run
-    psql -a -f postinsert.sql;
+  This will:
+    Remove the 3 tables and potentially temporary ones
 
 Running REST server
 

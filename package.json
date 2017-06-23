@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "stations": "sh stations.sh"
+    "stations": "sh ./setup/stations.sh",
+    "update": "cd update && ./update.sh",
+    "setup": "cd setup && ./setup.sh",
+    "teardown": "psql -f ./teardown/teardown.sql"
   },
   "dependencies": {
     "bluebird": "^3.5.0",

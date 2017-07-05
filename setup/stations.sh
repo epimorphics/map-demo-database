@@ -1,2 +1,2 @@
-node setup/stations.js > stations.csv
+node stations.js > stations.csv
 

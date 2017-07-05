@@ -7,7 +7,8 @@
     "stations": "sh ./setup/stations.sh",
     "update": "cd update && ./update.sh",
     "setup": "cd setup && ./setup.sh",
-    "teardown": "psql -f ./teardown/teardown.sql"
+    "teardown": "psql -f ./teardown/teardown.sql",
+    "lint": "eslint **/*.js"
   },
   "dependencies": {
     "bluebird": "^3.5.0",

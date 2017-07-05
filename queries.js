@@ -50,7 +50,7 @@ function getReadingsDateTime(req, res, next) {
     });
 }
 
-function getLevelsDateTime(req, res, next) {
+function getLevelsDateTimeAreas(req, res, next) {
   validateDateTime(req.params.date, req.params.time)
     .then((timestamp) => {
       db.manyOrNone(
@@ -73,7 +73,6 @@ function getLevelsDateTime(req, res, next) {
              AND areas.long + 0.2 > lv.long) \
          WHERE areas.lat is not null group by areas.lat, areas.long`
       )
-     // db.manyOrNone(`SELECT lat, long, val / divisor as value FROM (SELECT timestamp, lat, long, (value - avgvalue) as val, (typicalmax - avgvalue) as divisor, avgvalue, value from level_values  LEFT JOIN level_station_values ON (level_values.station = level_station_values.station)) as perc where divisor > 0 AND timestamp >= '${timestamp}'::timestamp AND timestamp < '${timestamp}'::timestamp + INTERVAL '15 minutes'`)
         .then((data) => {
           res.status(200)
             .json({
@@ -93,6 +92,31 @@ function getLevelsDateTime(req, res, next) {
     });
 }
 
+function getLevelsDateTime(req, res, next) {
+  validateDateTime(req.params.date, req.params.time)
+    .then((timestamp) => {
+      db.manyOrNone(
+        `SELECT lat, long, val / divisor as value \
+         FROM (SELECT timestamp, lat, long, (value - avgvalue) as val, (typicalmax - avgvalue) as divisor, avgvalue, value from level_values  LEFT JOIN level_station_values ON (level_values.station = level_station_values.station)) as perc where divisor > 0 AND timestamp >= '${timestamp}'::timestamp AND timestamp < '${timestamp}'::timestamp + INTERVAL '15 minutes'`
+      )
+        .then((data) => {
+          res.status(200)
+            .json({
+              status: 'success',
+              data,
+              message: 'gotReading'
+            });
+        });
+    })
+    .catch((err) => {
+      res.status(404)
+      .json({
+        status: 'failure',
+        data: [],
+        message: 'Invalid date'
+      });
+    });
+}
 function getTideDateTime(req, res, next) {
   validateDateTime(req.params.date, req.params.time)
     .then((timestamp) => {
@@ -129,6 +153,6 @@ function getTideDateTime(req, res, next) {
 
 module.exports = {
   getReadingsDateTime: getReadingsDateTime,
-  getLevelsDateTime: getLevelsDateTime,
+  getLevelsDateTime: getLevelsDateTimeAreas,
   getTideDateTime: getTideDateTime,
 };

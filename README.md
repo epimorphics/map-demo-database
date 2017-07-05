@@ -4,8 +4,20 @@ Clone the repository, run npm install
 
 With Postgres setup;
 
-Download readings.csv and stations.csv (these are quite small, around 300mb). Much better than downloading all csvs and parsing 7GB! Place them in the setup folder
-Run npm run-script setup
+Download epidata.db
+  create database for the application
+    CREATE DATABASE {dbname}
+  load dump using
+    pg_restore -d {dbname} epidata.db
+
+If you do not have access to the dump, you can create a database using the supplied shell scripts
+Create the following files
+  readings.csv: file consisting of merged csv files from the environments agency archives
+  stations.csv, levelstations.csv, tidestations.csv:
+    These can be created by running *stations.sh
+Place these files into ./setup then
+
+Run "npm run-script setup"
 
   This will:
     create the 3 tables required
@@ -14,22 +26,16 @@ Run npm run-script setup
 UPDATE
 
 If the data needs updating
+place up to date csv data into ./update
 
-Run npm run-script update
+Run "npm run-script update" to add this data to the database
 
-  This will:
-    Download all missing rainfall data
-    format it to a csv
-    add it to the table
 
 TEARDOWN
 
 If you wish to remove all data
 
 Run npm run-script teardown
-
-  This will:
-    Remove the 3 tables and potentially temporary ones
 
 Running REST server
 

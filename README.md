@@ -1,14 +1,26 @@
-SETUP,
+Backend database for map data visualisation
 
-Clone the repository, run npm install
+# Build Setup
 
-With Postgres setup;
+``` bash
+# install dependencies
+npm install
+```
 
-Download epidata.db
-  create database for the application
-    CREATE DATABASE {dbname}
-  load dump using
+# Database Setup
+With Postgres installed and roles set
+
+Download epidata.db dump
+
+``` sql
+-- create database for the application
+CREATE DATABASE {dbname}
+```
+
+``` bash
+# load dump into dbname
     pg_restore -d {dbname} epidata.db
+```
 
 If you do not have access to the dump, you can create a database using the supplied shell scripts
 Create the following files
@@ -17,29 +29,32 @@ Create the following files
     These can be created by running *stations.sh
 Place these files into ./setup then
 
-Run "npm run-script setup"
+``` bash
+npm run-script setup
+```
 
   This will:
     create the 3 tables required
     load csv data from readings.csv and stations.csv into database
 
-UPDATE
+# Update
 
 If the data needs updating
-place up to date csv data into ./update
+place up to date csv data into ./update as readings.csv
 
 Run "npm run-script update" to add this data to the database
 
+# Teardown
 
-TEARDOWN
+``` bash
+# remove all data
+npm run-script teardown
+```
 
-If you wish to remove all data
+# Running REST server
 
-Run npm run-script teardown
+``` bash
+npm start
+```
 
-Running REST server
-
-  run
-    npm start
-
-  Your server is now running on port 3000
+Your server is now running on port 3000

@@ -1,26 +1,26 @@
-var promise = require('bluebird');
-var moment = require('moment');
+const promise = require('bluebird');
+const moment = require('moment');
 
-var options = {
+const options = {
   promiseLib: promise,
-}
+};
 
-var pgp = require('pg-promise')(options);
+const pgp = require('pg-promise')(options);
 
 // Modify connectionstring.js.example
-var connectionString = require('./connectionstring.js');
-var db = pgp(connectionString);
+const connectionString = require('./connectionstring.js');
+
+const db = pgp(connectionString);
 
 function validateDateTime(date, time) {
   const timestamp = moment(`${date} ${time}`, 'YYYY-MM-DD hh-mm');
   if (timestamp.isValid()) {
     return Promise.resolve(timestamp.format('YYYY-MM-DD hh:mm'));
-  } else {
-    return Promise.reject('Invalid timestamp');
   }
+  return Promise.reject('Invalid timestamp');
 }
 
-function getReadingsDateTime(req, res, next) {
+function getReadingsDateTime(req, res) {
   validateDateTime(req.params.date, req.params.time)
     .then((timestamp) => {
       db.manyOrNone(
@@ -36,21 +36,21 @@ function getReadingsDateTime(req, res, next) {
             .json({
               status: 'success',
               data,
-              message: 'gotReading'
+              message: 'gotReading',
             });
         });
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(404)
-      .json({
-        status: 'failure',
-        data: [],
-        message: 'Invalid date'
-      });
+        .json({
+          status: 'failure',
+          data: [],
+          message: 'Invalid date',
+        });
     });
 }
 
-function getLevelsDateTimeAreas(req, res, next) {
+function getLevelsDateTimeAreas(req, res) {
   validateDateTime(req.params.date, req.params.time)
     .then((timestamp) => {
       db.manyOrNone(
@@ -78,21 +78,21 @@ function getLevelsDateTimeAreas(req, res, next) {
             .json({
               status: 'success',
               data,
-              message: 'gotReading'
+              message: 'gotReading',
             });
         });
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(404)
-      .json({
-        status: 'failure',
-        data: [],
-        message: 'Invalid date'
-      });
+        .json({
+          status: 'failure',
+          data: [],
+          message: 'Invalid date',
+        });
     });
 }
 
-function getLevelsDateTime(req, res, next) {
+function getLevelsDateTime(req, res) {
   validateDateTime(req.params.date, req.params.time)
     .then((timestamp) => {
       db.manyOrNone(
@@ -104,20 +104,20 @@ function getLevelsDateTime(req, res, next) {
             .json({
               status: 'success',
               data,
-              message: 'gotReading'
+              message: 'gotReading',
             });
         });
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(404)
-      .json({
-        status: 'failure',
-        data: [],
-        message: 'Invalid date'
-      });
+        .json({
+          status: 'failure',
+          data: [],
+          message: 'Invalid date',
+        });
     });
 }
-function getTideDateTime(req, res, next) {
+function getTideDateTime(req, res) {
   validateDateTime(req.params.date, req.params.time)
     .then((timestamp) => {
       db.manyOrNone(
@@ -137,22 +137,23 @@ function getTideDateTime(req, res, next) {
             .json({
               status: 'success',
               data,
-              message: 'gotReading'
+              message: 'gotReading',
             });
         });
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(404)
-      .json({
-        status: 'failure',
-        data: [],
-        message: 'Invalid date'
-      });
+        .json({
+          status: 'failure',
+          data: [],
+          message: 'Invalid date',
+        });
     });
 }
 
 module.exports = {
-  getReadingsDateTime: getReadingsDateTime,
-  getLevelsDateTime: getLevelsDateTimeAreas,
-  getTideDateTime: getTideDateTime,
+  getReadingsDateTime,
+  getLevelsDateTimeAreas,
+  getLevelsDateTime,
+  getTideDateTime,
 };

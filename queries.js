@@ -12,6 +12,14 @@ const connectionString = require('./connectionstring.js');
 
 const db = pgp(connectionString);
 
+/**
+ * Validates date and time supplied in URL
+ *
+ * @param {string} date date given in URL
+ * @param {string} time time given in URL
+ * @returns {Promise} Returns date string for database if valid, rejects with
+ * error message if invalid
+ */
 function validateDateTime(date, time) {
   const timestamp = moment(`${date} ${time}`, 'YYYY-MM-DD hh-mm');
   if (timestamp.isValid()) {
@@ -20,6 +28,12 @@ function validateDateTime(date, time) {
   return Promise.reject('Invalid timestamp');
 }
 
+/**
+ * Gets Rainfall data for given date and time within 15 minute interval
+ *
+ * @param {} req HTTP request
+ * @param {} res HTTP response
+ */
 function getReadingsDateTime(req, res) {
   validateDateTime(req.params.date, req.params.time)
     .then((timestamp) => {
@@ -50,6 +64,13 @@ function getReadingsDateTime(req, res) {
     });
 }
 
+/**
+ * Gets river levels for a given date and time within 15 minute interval for
+ * Discrete areas of 0.1degrees latitudinally and 0.2 degrees longitudinally
+ *
+ * @param {} req HTTP request
+ * @param {} res HTTP response
+ */
 function getLevelsDateTimeAreas(req, res) {
   validateDateTime(req.params.date, req.params.time)
     .then((timestamp) => {
@@ -92,6 +113,12 @@ function getLevelsDateTimeAreas(req, res) {
     });
 }
 
+/**
+ * Gets river levels for a given date and time within 15 minute interval
+ *
+ * @param {} req HTTP request
+ * @param {} res HTTP response
+ */
 function getLevelsDateTime(req, res) {
   validateDateTime(req.params.date, req.params.time)
     .then((timestamp) => {
@@ -117,6 +144,13 @@ function getLevelsDateTime(req, res) {
         });
     });
 }
+
+/**
+ * Gets tidal data for a given date and time within 15 minute interval
+ *
+ * @param {} req HTTP request
+ * @param {} res HTTP response
+ */
 function getTideDateTime(req, res) {
   validateDateTime(req.params.date, req.params.time)
     .then((timestamp) => {

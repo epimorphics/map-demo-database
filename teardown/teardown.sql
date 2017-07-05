@@ -9,4 +9,5 @@ DROP TABLE IF EXISTS tide_station_values;
 DROP TABLE IF EXISTS temptimecsv;
 DROP TABLE IF EXISTS temptidecsv;
 DROP TABLE IF EXISTS tempstationcsv;
+DROP VIEW IF EXISTS areas;
 COMMIT;

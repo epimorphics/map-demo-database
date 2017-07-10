@@ -72,9 +72,9 @@ const getTide = new PS('get-tide',
  * error message if invalid
  */
 function validateDateTime(date, time) {
-  const timestamp = moment(`${date} ${time}`, 'YYYY-MM-DD hh-mm');
+  const timestamp = moment(`${date} ${time}`, 'YYYY-MM-DD HH-mm');
   if (timestamp.isValid()) {
-    return Promise.resolve(timestamp.format('YYYY-MM-DD hh:mm'));
+    return Promise.resolve(timestamp.format('YYYY-MM-DD HH:mm'));
   }
   return Promise.reject('Invalid timestamp');
 }
@@ -164,4 +164,5 @@ module.exports = {
   getLevelsDateTimeAreas,
   getLevelsDateTime,
   getTideDateTime,
+  getStations,
 };
